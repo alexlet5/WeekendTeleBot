@@ -9,7 +9,7 @@ import datetime
 bot = telebot.TeleBot('1340374373:AAGnJJaEhO4vrEjjdgNj7BY0KVIPggU1nRE')
 
 
-spamday = 0       #тупая рассылка(очень тупая(очень(очень))), хвост на 94 строке
+spam_day = 0       #тупая рассылка(очень тупая(очень(очень))), хвост на 94 строке
 while True:
 
     def to_text(response):  #апи выдает 0 по будням, 1 по выходным
@@ -18,22 +18,22 @@ while True:
         else:
             return("Увы, сегодня не выходной ")
 
-    def getyear():
+    def get_year():
         return str(datetime.datetime.now())[0:4]
 
-    def getmonth():
+    def get_month():
         return str(datetime.datetime.now())[5:7]
 
-    def getday():
+    def get_day():
         return str(datetime.datetime.now())[8:10]
 
-    def gethour():
+    def get_hour():
         return str(datetime.datetime.now())[11:13]
 
 
 
 
-    def getid(user):
+    def get_id(user):
         return user['chat_id']
 
     def get_index_of_user(user_id, users):
@@ -53,14 +53,14 @@ while True:
     def spam():                       #вызывает ежедневную рассылку подписчикам
         users = get_users()
         for user in users:
-            bot.send_message(getid(user),to_text(requests.get(f'https://isdayoff.ru/{getyear()}{getmonth()}{getday()}')))
+            bot.send_message(get_id(user),to_text(requests.get(f'https://isdayoff.ru/{get_year()}{get_month()}{get_day()}')))
 
 
 
 
     @bot.message_handler(commands=['today'])
     def today(message):
-        bot.send_message(message.chat.id, to_text(requests.get(f'https://isdayoff.ru/{getyear()}{getmonth()}{getday()}')))
+        bot.send_message(message.chat.id, to_text(requests.get(f'https://isdayoff.ru/{get_year()}{get_month()}{get_day()}')))
 
 
 
@@ -91,10 +91,10 @@ while True:
 
 
 
-    if getday() != spamday:
-        if gethour() == str(8):   #рассылка в 8 утра
+    if get_day() != spam_day:
+        if get_hour() == str(8):   #рассылка в 8 утра
             spam()
-            spamday = getday()
+            spam_day = get_day()
 
 
 
